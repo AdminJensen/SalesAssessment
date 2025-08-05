@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Economics Assessment Tool - IMMEO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1B4332 0%, #2D5A41 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+        
+        .immeo-logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: 30px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .main-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .company-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+        
+        .tool-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .tool-header {
+            background: linear-gradient(135deg, #1B4332, #2D5A41);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .tool-title {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .tool-description {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            min-height: 700px;
+        }
+        
+        .input-section {
+            padding: 40px;
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
+        }
+        
+        .results-section {
+            padding: 40px;
+            background: white;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #1B4332;
+            border-bottom: 3px solid #2D5A41;
+            padding-bottom: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+            font-size: 1.1rem;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #2D5A41;
+            box-shadow: 0 0 0 3px rgba(45, 90, 65, 0.1);
+        }
+        
+        .input-description {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 2px solid #22c55e;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.15);
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1B4332;
+            margin-bottom: 8px;
+        }
+        
+        .metric-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #166534;
+            margin-bottom: 5px;
+        }
+        
+        .metric-description {
+            font-size: 0.9rem;
+            color: #64748b;
+            line-height: 1.4;
+        }
+        
+        .roi-highlight {
+            background: linear-gradient(135deg, #1B4332, #2D5A41);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .roi-highlight::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+        
+        .roi-value {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .roi-label {
+            font-size: 1.3rem;
+            font-weight: 600;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .study-reference {
+            background: #fef7cd;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .study-reference h4 {
+            color: #92400e;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .study-reference ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .study-reference li {
+            padding: 8px 0;
+            color: #78350f;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .study-reference li:before {
+            content: "📊";
+            margin-right: 10px;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #1B4332, #2D5A41);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            margin-top: 40px;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: slide 2s infinite;
+        }
+        
+        @keyframes slide {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .cta-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta-text {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1B4332;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta-button:hover {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(251, 191, 36, 0.4);
+        }
+        
+        .formula-explanation {
+            background: #f8fafc;
+            border: 2px solid #2D5A41;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .formula-title {
+            font-weight: bold;
+            color: #1B4332;
+            margin-bottom: 10px;
+        }
+        
+        .formula {
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #2D5A41;
+            font-size: 0.9rem;
+        }
+        
+        .immeo-branding {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .immeo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1B4332;
+            letter-spacing: 2px;
+        
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-section {
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .tool-title {
+                font-size: 2rem;
+            }
+            
+            .immeo-logo {
+                width: 150px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .input-section, .results-section {
+                padding: 20px;
+            }
+            
+            .metric-value {
+                font-size: 2rem;
+            }
+            
+            .roi-value {
+                font-size: 2.5rem;
+            }
+            
+            .immeo-logo {
+                width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="immeo-branding">
+                <div class="immeo-text">IMMEO</div>
+            </div>
+            <h1 class="main-title">CRM Economics Assessment</h1>
+            <div class="subtitle">Maximize your Salesforce Investment</div>
+            <div class="company-badge">Powered by IMMEO</div>
+        </div>
+
+        <div class="tool-container">
+            <div class="tool-header">
+                <h2 class="tool-title">Revenue Impact Calculator</h2>
+                <p class="tool-description">
+                    Based on real industry studies and verified benchmarks. Enter your metrics to see 
+                    how AI-powered CRM optimization could impact your business performance.
+                </p>
+            </div>
+
+            <div class="main-content">
+                <div class="input-section">
+                    <h3 class="section-title">Your Current Sales Metrics</h3>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Number of Sales Reps</label>
+                        <input type="number" id="salesReps" class="input-field" value="12" min="1" max="1000">
+                        <div class="input-description">Total frontline sales team members</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Leads per Rep per Month</label>
+                        <input type="number" id="leadsPerRep" class="input-field" value="30" min="1" max="500">
+                        <div class="input-description">Average monthly lead volume per salesperson</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Current Conversion Rate (%)</label>
+                        <input type="number" id="conversionRate" class="input-field" value="12" min="1" max="100" step="0.1">
+                        <div class="input-description">Percentage of leads that convert to closed deals</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Average Deal Size (DKK)</label>
+                        <input type="number" id="dealSize" class="input-field" value="45000" min="1000" max="10000000">
+                        <div class="input-description">Average revenue per closed opportunity</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Current Sales Cycle (Days)</label>
+                        <input type="number" id="salesCycle" class="input-field" value="75" min="1" max="365">
+                        <div class="input-description">Average time from lead to closed deal</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Annual Salesforce License Cost (DKK)</label>
+                        <input type="number" id="annualLicenses" class="input-field" value="180000" min="50000" max="2000000">
+                        <div class="input-description">Current or estimated annual Salesforce licensing costs</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Annual CRM Implementation Budget (DKK)</label>
+                        <input type="number" id="implementationBudget" class="input-field" value="800000" min="100000" max="10000000">
+                        <div class="input-description">One-time implementation: consulting, customization, training, data migration</div>
+                    </div>
+
+                    <div class="formula-explanation">
+                        <div class="formula-title">Revenue Calculation:</div>
+                        <div class="formula">
+                            Current Annual Revenue = (Sales Reps × Leads/Rep × Conversion Rate × Deal Size) × 12
+                        </div>
+                        <div class="formula">
+                            ROI = (Revenue Increase - Total Cost) / Total Cost × 100
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-section">
+                    <h3 class="section-title">Your ROI Potential</h3>
+                    
+                    <div class="roi-highlight">
+                        <div class="roi-value" id="roiPercentage">Calculating...</div>
+                        <div class="roi-label">3-Year ROI Based on Your Inputs</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-value" id="currentRevenue">Calculating...</div>
+                        <div class="metric-label">Current Annual Revenue</div>
+                        <div class="metric-description">Based on your current sales performance</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-value" id="improvedRevenue">Calculating...</div>
+                        <div class="metric-label">Potential Annual Revenue</div>
+                        <div class="metric-description">With CRM optimization (10% increase - conservative estimate)</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-value" id="revenueIncrease">Calculating...</div>
+                        <div class="metric-label">Annual Revenue Increase</div>
+                        <div class="metric-description">Additional revenue from optimization</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-value" id="productivityGain">15%</div>
+                        <div class="metric-label">Sales Productivity Boost</div>
+                        <div class="metric-description">Conservative estimate with 75% adoption rate</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-value" id="cycleDaysReduced">Calculating...</div>
+                        <div class="metric-label">Days Reduced from Sales Cycle</div>
+                        <div class="metric-description">8% reduction based on your current cycle</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-value" id="totalInvestment">Calculating...</div>
+                        <div class="metric-label">Total 3-Year Investment</div>
+                        <div class="metric-description">Implementation + licenses + training + maintenance</div>
+                    </div>
+
+                    <div class="study-reference">
+                        <h4>Based on Verified Industry Studies:</h4>
+                        <ul id="studyList">
+                            <li><strong>Nucleus Research 2024:</strong> CRM delivers $3.10 return per dollar spent</li>
+                            <li><strong>Salesforce Study 2022:</strong> 89% of 3,500+ enterprises achieved positive ROI</li>
+                            <li><strong>CRM.org 2025:</strong> Average 29% sales revenue increase with proper implementation</li>
+                            <li><strong>Johnny Grow Research:</strong> Salesforce ROI averages 314% with high adoption</li>
+                            <li><strong>Microsoft 2024:</strong> 70% of AI users report improved productivity</li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-explanation">
+                        <div class="formula-title">Conservative Improvement Factors:</div>
+                        <div class="formula">• 10% revenue increase (conservative estimate with 75% adoption)</div>
+                        <div class="formula">• 15% productivity improvement (lower end of range)</div>
+                        <div class="formula">• 6-8 day sales cycle reduction (8% average)</div>
+                        <div class="formula">• Includes: licenses, training, maintenance, integrations, change management</div>
+                        <div class="formula">• 3-year total cost of ownership model (comprehensive)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <h3 class="cta-title">Ready to Achieve These Results?</h3>
+                <p class="cta-text">
+                    Let's discuss how a 30-day Fast Value Pilot can demonstrate these improvements 
+                    for your specific business situation, backed by our 9x Salesforce certifications and proven expertise.
+                </p>
+                <button class="cta-button" onclick="scheduleCall()">Schedule Strategy Call</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // All input fields
+        const inputs = {
+            salesReps: document.getElementById('salesReps'),
+            leadsPerRep: document.getElementById('leadsPerRep'),
+            conversionRate: document.getElementById('conversionRate'),
+            dealSize: document.getElementById('dealSize'),
+            salesCycle: document.getElementById('salesCycle'),
+            annualLicenses: document.getElementById('annualLicenses'),
+            implementationBudget: document.getElementById('implementationBudget')
+        };
+
+        // Result display elements
+        const results = {
+            currentRevenue: document.getElementById('currentRevenue'),
+            improvedRevenue: document.getElementById('improvedRevenue'),
+            revenueIncrease: document.getElementById('revenueIncrease'),
+            roiPercentage: document.getElementById('roiPercentage'),
+            productivityGain: document.getElementById('productivityGain'),
+            cycleDaysReduced: document.getElementById('cycleDaysReduced'),
+            totalInvestment: document.getElementById('totalInvestment')
+        };
+
+        // Industry-verified improvement factors (conservative for trust-building)
+        const industryBenchmarks = {
+            revenueIncrease: 1.10,        // 10% increase (conservative estimate)
+            productivityBoost: 0.15,      // 15% productivity improvement (lower end)
+            salesCycleReduction: 0.08,    // 8% reduction (conservative)
+            adoptionRate: 0.75,           // 75% user adoption (realistic challenge)
+            nucleusROI: 3.10              // $3.10 return per dollar (Nucleus Research 2024)
+        };
+
+        function formatCurrency(amount) {
+            if (amount >= 1000000) {
+                return (amount / 1000000).toFixed(1) + 'M';
+            } else if (amount >= 1000) {
+                return (amount / 1000).toFixed(0) + 'K';
+            } else {
+                return amount.toFixed(0);
+            }
+        }
+
+        function formatNumber(num) {
+            return num.toLocaleString('da-DK');
+        }
+
+        function calculateMetrics() {
+            // Get current values
+            const salesReps = parseInt(inputs.salesReps.value) || 0;
+            const leadsPerRep = parseInt(inputs.leadsPerRep.value) || 0;
+            const conversionRate = parseFloat(inputs.conversionRate.value) / 100 || 0;
+            const dealSize = parseInt(inputs.dealSize.value) || 0;
+            const salesCycle = parseInt(inputs.salesCycle.value) || 1;
+            const annualLicenses = parseInt(inputs.annualLicenses.value) || 0;
+            const implementationBudget = parseInt(inputs.implementationBudget.value) || 0;
+
+            // Calculate current metrics
+            const currentMonthlyDeals = salesReps * leadsPerRep * conversionRate;
+            const currentMonthlyRevenue = currentMonthlyDeals * dealSize;
+            const currentAnnualRevenue = currentMonthlyRevenue * 12;
+
+            // Conservative improvement calculation with adoption factor
+            const adoptionAdjustment = industryBenchmarks.adoptionRate; // Only 75% of potential realized
+            const improvedAnnualRevenue = currentAnnualRevenue * (1 + ((industryBenchmarks.revenueIncrease - 1) * adoptionAdjustment));
+            const revenueIncrease = improvedAnnualRevenue - currentAnnualRevenue;
+
+            // Comprehensive cost calculation
+            const threeYearLicenses = annualLicenses * 3;
+            const maintenanceAndSupport = implementationBudget * 0.20 * 3; // 20% annually for 3 years
+            const additionalIntegrations = implementationBudget * 0.15; // 15% for additional integrations
+            const trainingCosts = salesReps * 15000; // 15K DKK per rep for comprehensive training
+            const changeManagement = implementationBudget * 0.10; // 10% for change management
+            
+            const totalCostOfOwnership3Years = implementationBudget + threeYearLicenses + maintenanceAndSupport + 
+                                             additionalIntegrations + trainingCosts + changeManagement;
+            const totalCostOfOwnership = totalCostOfOwnership3Years;
+            
+            // Calculate 3-year ROI with comprehensive cost model
+            const threeYearRevenueGain = revenueIncrease * 3;
+            const roiPercentage = totalCostOfOwnership > 0 ? 
+                ((threeYearRevenueGain - totalCostOfOwnership) / totalCostOfOwnership) * 100 : 0;
+
+            // Calculate sales cycle improvement based on actual input
+            const cycleDaysReduced = Math.round(salesCycle * industryBenchmarks.salesCycleReduction);
+            
+            // Update display with calculated values
+            results.currentRevenue.textContent = formatCurrency(currentAnnualRevenue);
+            results.improvedRevenue.textContent = formatCurrency(improvedAnnualRevenue);
+            results.revenueIncrease.textContent = formatCurrency(revenueIncrease);
+            
+            // Display calculated ROI (ensure it's reasonable)
+            let displayROI;
+            if (roiPercentage < 0) {
+                displayROI = "0% - Increase budget or revenue";
+            } else if (roiPercentage > 1000) {
+                displayROI = "1000%+ - Exceptional case";
+            } else {
+                displayROI = Math.round(roiPercentage) + '%';
+            }
+            results.roiPercentage.textContent = displayROI;
+            
+            // Display dynamic productivity metrics
+            results.productivityGain.textContent = Math.round(industryBenchmarks.productivityBoost * 100) + '%';
+            results.cycleDaysReduced.textContent = cycleDaysReduced + ' days';
+            results.totalInvestment.textContent = formatCurrency(totalCostOfOwnership);
+
+            // Update study references based on company profile
+            updateStudyReferences(salesReps, currentAnnualRevenue);
+        }
+
+        function updateStudyReferences(reps, revenue) {
+            const studyList = document.getElementById('studyList');
+            const studies = [
+                '<strong>Nucleus Research 2024:</strong> CRM delivers $3.10 return per dollar spent',
+                '<strong>Salesforce Study 2022:</strong> 89% of 3,500+ enterprises achieved positive ROI',
+                '<strong>CRM.org 2025:</strong> Average 29% sales revenue increase with proper implementation',
+                '<strong>Johnny Grow Research:</strong> Salesforce ROI averages 314% with high adoption'
+            ];
+
+            // Add context-specific studies based on company profile
+            if (reps > 50) {
+                studies.push('<strong>Enterprise Focus:</strong> Large companies with 50+ reps typically see higher ROI due to scale');
+            }
+            
+            if (revenue > 20000000) {
+                studies.push('<strong>High-Revenue Impact:</strong> Companies >20M DKK see significant process efficiency gains');
+            }
+            
+            // Fixed: These lines were causing the syntax error - now properly added as strings
+            studies.push('<strong>Conservative Projections:</strong> We use lower-end estimates to ensure realistic expectations');
+            studies.push('<strong>Adoption Reality:</strong> Assumes 75% user adoption rate (industry challenge)');
+
+            studyList.innerHTML = studies.map(study => `<li>${study}</li>`).join('');
+        }
+
+        function scheduleCall() {
+            // In a real implementation, this would integrate with a calendar system
+            alert('Thank you for your interest!\n\nNext Steps:\n• We\'ll discuss your specific CRM challenges\n• Review your ROI projections in detail\n• Design a 30-day Fast Value Pilot\n• Demonstrate our 9x Salesforce certifications\n\nContact: IMMEO\nWebsite: www.immeo.dk\nSpecialty: Salesforce + AI Implementation');
+        }
+
+        // Add event listeners to all inputs
+        Object.values(inputs).forEach(input => {
+            input.addEventListener('input', calculateMetrics);
+        });
+
+        // Initial calculation on page load
+        calculateMetrics();
+
+        // Add some interactive enhancements
+        Object.values(inputs).forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // Add hover effects to metric cards
+        document.querySelectorAll('.metric-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-5px) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
